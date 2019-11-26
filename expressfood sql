@@ -1,0 +1,257 @@
+-- phpMyAdmin SQL Dump
+-- version 4.8.5
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1:3306
+-- Généré le :  mer. 10 juil. 2019 à 23:58
+-- Version du serveur :  5.7.26
+-- Version de PHP :  7.2.18
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données :  `expressfood`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `adresse`
+--
+
+DROP TABLE IF EXISTS `adresse`;
+CREATE TABLE IF NOT EXISTS `adresse` (
+  `adresse_Id` varchar(10) NOT NULL,
+  `rue` varchar(100) NOT NULL,
+  `numero` varchar(10) NOT NULL,
+  `ville` varchar(100) NOT NULL,
+  `code_postal` varchar(20) NOT NULL,
+  `etage` int(20) NOT NULL,
+  `batiment` varchar(50) NOT NULL,
+  `digicode` varchar(50) NOT NULL,
+  `client_Id` int(11) NOT NULL,
+  `commande_Id` int(11) NOT NULL,
+  PRIMARY KEY (`adresse_Id`),
+  UNIQUE KEY `adresse_commande0_AK` (`commande_Id`),
+  KEY `adresse_client0_FK` (`client_Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Déchargement des données de la table `adresse`
+--
+
+INSERT INTO `adresse` (`adresse_id`, `rue`, `numero`, `ville`, `code_postal`, `etage`, `batiment`, `digicode` 'commande_Id') VALUES
+(1, 'Rue Aime Cesaire', 6, 'Fleury-merogis', '91700', 2, 'F', '4322'),
+(2, 'Place Pierre Levee', 120, 'Paris', '75016', 3, 'SCD1', '987'),
+(3, 'Saint Germain', 35, 'Rennes', '3500', 5, 'DG1E', '1234'),
+(4,'Rue Paul Eluard', 26, 'Sainte Genevieve des bois', '91700', 1, NULL, '07544'),
+(5, 'Rue du Jura', 79, 'Nice', '06200', 1, 'DEAQ', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `client`
+--
+
+DROP TABLE IF EXISTS `client`;
+CREATE TABLE IF NOT EXISTS `client` (
+  `client_Id` int(11) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `prenom` varchar(50) NOT NULL,
+  `telephone` varchar(10) NOT NULL,
+  `mail` varchar(50) NOT NULL,
+  PRIMARY KEY (`client_Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `client`
+--
+
+INSERT INTO `client` (`client_Id`, `nom`, `prenom`, `telephone`, `mail`) VALUES
+(1, 'Poole', 'Iona', '0912142422', 'dolor@diam.org'),
+(2, 'Horton', 'Keefe', '0134226734', 'et@Curabituregestas.com'),
+(3, 'Graham', 'Castor', '0917342834', 'convallis@cursusa.org'),
+(4, 'Barr', 'Quincy', '0926385634', 'non.leo@magna.org'),
+(5, 'Finley', 'Alexa', '0926381230', 'felis.Donec@leo.edu'),
+(6, 'Talley', 'Maya', '0189456382', 'facilisis.vitae.orci@primisinfaucibus.co.uk'),
+(7, 'George', 'Tanner', '0965293749', 'Nunc.mauris.Morbi@nonegestasa.org'),
+(8, 'Mcclure', 'Montana', '0945273612', 'quam@Morbiaccumsan.org'),
+(9, 'Sanchez', 'Kitra', '0169562974', 'a.feugiat@luctus.edu'),
+(10, 'Hanson', 'Benedict', '0967293847', 'tellus@velfaucibusid.net'),
+(11, 'Witt', 'Jordan', '0139475638', 'vel@euismod.net'),
+(12, 'Mitchell', 'Rina', '0919274694', 'Aliquam.nisl@sollicitudinadipiscing.edu');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `commande`
+--
+
+DROP TABLE IF EXISTS `commande`;
+CREATE TABLE IF NOT EXISTS `commande` (
+  `commande_Id` int(11) NOT NULL,
+  `date_creation` date NOT NULL,
+  `paye` tinyint(1) NOT NULL,
+  `note` varchar(20) NOT NULL,
+  `statut` varchar(50) NOT NULL,
+  `montant`decimal(6,2) NOT NULL ,
+  `client_Id` int(11) NOT NULL,
+  `adresse_Id` varchar(10) NOT NULL,
+  PRIMARY KEY (`commande_Id`),
+  UNIQUE KEY `commande_adresse0_AK` (`adresse_Id`),
+  KEY `commande_client0_FK` (`client_Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Déchargement des données de la table `commande`
+--
+
+INSERT INTO `commande` (`commande_id`, `date_creation`, `paye`, `statut`, `montant`, `client_Id`, `adresse_Id`) VALUES
+(1, '2019-07-06', 1, 'Tres bon', '13.12', 4, 3),
+(2, '2019-07-02', 1, 'Bon', '39.45', 8, 1),
+(3, '2019-07-10', 1, 'Excellent', '15.00', 6, 2);
+
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `ingredient`
+--
+
+DROP TABLE IF EXISTS `ingredient`;
+CREATE TABLE IF NOT EXISTS `ingredient` (
+  `ingredient_id` int(11) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `stock` int(11) NOT NULL,
+  PRIMARY KEY (`ingredient_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `ingredient`
+--
+
+INSERT INTO `ingredient` (`ingredient_id`, `nom`, `stock`) VALUES
+(1, 'tomate', 100),
+(2, 'huile 1L', 20),
+(3, 'salade', 10),
+(4, 'beurre', 20),
+(5, 'sel', 10),
+(6, 'oignon', 100);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `livreur`
+--
+
+DROP TABLE IF EXISTS `livreur`;
+CREATE TABLE IF NOT EXISTS `livreur` (
+  `livreur_Id` int(11) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `prenom` varchar(50) NOT NULL,
+  `nombre_de_plat_restant` int(100) NOT NULL,
+  `commande_Id` int(11) NOT NULL
+  PRIMARY KEY (`livreur_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `livreur`
+--
+
+INSERT INTO `livreur` (`livreur_Id`, `nom`, `prenom`, `nombre_de_plat_restant`, `commande_Id`) VALUES
+
+(1, 'Robert', 'Laurent', 3, 1),
+(2, 'Lopez', 'Celine', 3, 4),
+(3, 'Lupini', 'Paul', 10, 2),
+(4, 'Stabilas', 'Richard', 11, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `plat`
+--
+
+DROP TABLE IF EXISTS `plat`;
+CREATE TABLE IF NOT EXISTS `plat` (
+  `plat_Id` int(11) NOT NULL,
+  `nom_du_plat` varchar(50) NOT NULL,
+  `prix_unitaire` decimal(6,2) NOT NULL,
+  `type_plat` varchar(50) NOT NULL,
+  `plat_du_jour` varchar(20) NOT NULL
+  PRIMARY KEY (`plat_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `plat`
+--
+
+INSERT INTO `plat` (`plat_Id`, `nom_du_plat`, `prix_unitaire`, `type_plat`, `plat_du_jour`) VALUES
+(1, 'ragoûts au boeuf', '8.40', 'ragoûts de boeuf aux legumes', 'Ragoûts fait maison'),
+(2, 'sandwiches poulet curry', '3.80', 'sandwiches poulet curry', 'sanswiches poulet Asie'),
+(3, 'tartes au citron', '2.50', 'tartres citron', 'tartres C'),
+(4, 'crevettes', '25.00', 'crevettes aux piments', 'crevettes des Iles'),
+(5, 'pâtes au frommage', '5.20', 'pâtes frommage', 'pâtes express');
+
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `adresse`
+--
+ALTER TABLE `adresse`
+  ADD CONSTRAINT `adresse_client0_FK` FOREIGN KEY (`client_Id`) REFERENCES `client` (`client_Id`),
+  ADD CONSTRAINT `adresse_commande1_FK` FOREIGN KEY (`commande_Id`) REFERENCES `commande` (`commande_Id`);
+
+--
+-- Contraintes pour la table `transporte`
+--
+ALTER TABLE `transporte`
+  ADD CONSTRAINT `transporte_livreur0_FK` FOREIGN KEY (`livreur_Id`) REFERENCES `livreur` (`livreur_Id`),
+  ADD CONSTRAINT `transport_plat1_FK` FOREIGN KEY (`plat_Id`) REFERENCES `plat` (`plat_Id`);
+
+--
+-- Contraintes pour la table `contient`
+--
+ALTER TABLE `contient`
+  ADD CONSTRAINT `contient_commande1_FK` FOREIGN KEY (`commande_Id`) REFERENCES `commande` (`commande_Id`),
+  ADD CONSTRAINT `contient_plat1_FK` FOREIGN KEY (`plat_Id`) REFERENCES `plat` (`plat_Id`);
+
+
+--
+-- Contraintes pour la table `livreur`
+--
+ALTER TABLE `livreur`
+  ADD CONSTRAINT `livreur_commande1_FK` FOREIGN KEY (`commande_Id`) REFERENCES `commande` (`commande_Id`);
+  
+--
+-- Contraintes pour la table `stock`
+--
+ALTER TABLE `stock`
+  ADD CONSTRAINT `stock_plat1_FK` FOREIGN KEY (`plat_Id`) REFERENCES `plat` (`plat_Id`),
+  ADD CONSTRAINT `stock_ingredient1_FK` FOREIGN KEY (`ingredient_Id`) REFERENCES `ingredient` (`ingredient_Id`);
+
+
+--
+-- Contraintes pour la table `commande`
+--
+ALTER TABLE `commande`
+  ADD CONSTRAINT `commande_adresse1_FK` FOREIGN KEY (`adresse_Id`) REFERENCES `adresse` (`adresse_Id`),
+  ADD CONSTRAINT `commande_client0_FK` FOREIGN KEY (`client_Id`) REFERENCES `client` (`client_Id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
